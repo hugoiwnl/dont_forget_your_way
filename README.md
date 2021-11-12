@@ -7,4 +7,5 @@ everytime the player doesnt look at it.
 
 As time goes the camera gets shaky and dazy, so that the player
 should "heal" himself.
+change2
 
