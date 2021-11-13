@@ -12,9 +12,25 @@ public class ThirdPersonMovement : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
 
+    private void Start()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            CinemachineShake.Instance.StopShakeCamera();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            CinemachineShake.Instance.ShakeCamera(5f);
+        }
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
