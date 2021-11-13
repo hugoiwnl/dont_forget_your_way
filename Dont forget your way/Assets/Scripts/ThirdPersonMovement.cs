@@ -14,7 +14,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     private void Start()
     {
-
+        CinemachineShake.Instance.ShakeCamera(3f);
     }
 
     // Update is called once per frame
