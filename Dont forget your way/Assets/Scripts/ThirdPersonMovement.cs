@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
+    public Animator playerAnimator;
     public CharacterController controller;
     public Transform cam;
 
     public float speed = 6f;
+    public AudioSource audio;
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -22,6 +24,7 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         // StartCoroutine("DoCheck");
         // CinemachineShake.Instance.ShakeCamera(3f);
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -54,8 +57,17 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
+            //Debug.Log("krecem se");
+            if (!audio.isPlaying)
+            {
+                audio.Play();
+            }
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
+        }
+        else
+        {
+            audio.Stop();
         }
 
         if (horizontal > 0 || horizontal < 0)
@@ -65,17 +77,18 @@ public class ThirdPersonMovement : MonoBehaviour
             spriteFrontRenderer.enabled = false;
 
 
-            if (spirteRightRenderer.flipX && horizontal < 0)
+            if ( horizontal < 0)
             {
-                spriteBehindRenderer.flipX = true;
+                spirteRightRenderer.flipX = true;
             }
-            else if (!spriteBehindRenderer.flipX && horizontal > 0)
+            else if (horizontal > 0)
             {
-                spriteBehindRenderer.flipX = false;
+                spirteRightRenderer.flipX = false;
             }
         }
         else if (vertical < 0)
         {
+            playerAnimator.SetBool("Is_walking", true);
             spriteFrontRenderer.enabled = true;
             spriteBehindRenderer.enabled = false;
             spirteRightRenderer.enabled = false;
@@ -83,6 +96,7 @@ public class ThirdPersonMovement : MonoBehaviour
         }
         else if (vertical > 0)
         {
+            
             spriteBehindRenderer.enabled = true;
             spirteRightRenderer.enabled = false;
             spriteFrontRenderer.enabled = false;
@@ -93,6 +107,11 @@ public class ThirdPersonMovement : MonoBehaviour
             spriteBehindRenderer.enabled = false;
             spirteRightRenderer.enabled = false;
             spriteFrontRenderer.enabled = true;
+        }
+
+        if (vertical == 0)
+        {
+            playerAnimator.SetBool("Is_walking", false);
         }
     }
 
